@@ -1,0 +1,79 @@
+/*
+    全体の九通スタイル
+*/
+
+body {
+    font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","游ゴシック Medium",YuGothic,YuGothicM,"Hiragino Kaku Gothic ProN",メイリオ,Meiryo,sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul, ol {
+    list-style-type: none;
+}
+
+.inner {
+    width: 960px;
+    margin: 0 auto;
+}
+
+.content-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn {
+    background-color: #00bcd4;
+    color: #fff;
+}
+
+.btn-warning {
+    background-color: #ff8181;
+}
+
+
+
+/*
+    ヘッダースタイル
+*/
+
+#header {
+    background-color: yellow;
+    padding: 25px 0;
+    background-color: #fff;
+    box-shadow: 0 0 2px -1px gray;
+}
+
+.header-title {
+    font-size: 32px;
+    font-weight: normal;
+}
+
+.header-list {
+    display: flex;
+}
+
+.header-item {
+    vertical-align: middle;
+    margin-top: 5px;
+}
+
+.header-item + .header-item {
+    margin-left: 10px;
+}
+
+.header-btn {
+    padding: 10px;
+    border-radius: 5px;
+}
+
+
+
+
+/*
+    フッタースタイル
+*/
+
+
