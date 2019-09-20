@@ -1,6 +1,13 @@
+<?php
+
+require_once(dirname(__FILE__) . "/includes/network/database.php");
+
+$db = new Database();
 
 
-<?php require_once(dirname(__FILE__) . "/includes/template-parts/header.php"); ?>
+
+require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
+?>
 
 
 
