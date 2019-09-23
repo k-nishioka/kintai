@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body style="height: 500px">
 
 <header id="header">
     <div class="inner">
@@ -22,3 +22,6 @@
         </nav>
     </div>
 </header>
+<footer>
+<br>
+<a href="pdf_download.php" class="btn footer-btn">PDFダウンロード</a>
