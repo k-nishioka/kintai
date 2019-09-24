@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!-- 
     PDFを表示する処理
         * get_html_data(ダミーデータを取得するための関数)内でPDFに書き込みたい内容を記述する。
@@ -56,6 +57,12 @@
 <br><br>
 <!-- ここのdata属性は、取得したPDFのパスを指定 -->
 <object data="./includes/for_dummy_data/pdf/kinmu-hyo.pdf" type="application/pdf" width="100%" height="600px"></object>
+=======
+
+
+>>>>>>> 77e321c5ca8e504bae2370da51d2891eaa98d362
 </footer>
+
+</main>
 </body>
 </html>

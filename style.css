@@ -4,19 +4,43 @@
 
 body {
     font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","游ゴシック Medium",YuGothic,YuGothicM,"Hiragino Kaku Gothic ProN",メイリオ,Meiryo,sans-serif;
+    color: #000;
+    font-size: 16px;
+}
+
+main {
+    padding-top: 82px;
 }
 
 a {
     text-decoration: none;
+    color: #000;
+}
+
+a:hover {
+    color: #000;
 }
 
 ul, ol {
     list-style-type: none;
 }
 
+.title-font {
+    font-size: 32px;
+    font-weight: 500;
+}
+
+.subtitle-font {
+    font-size: 24px;
+}
+
 .inner {
     width: 960px;
     margin: 0 auto;
+}
+
+.for-center {
+    text-align: center;
 }
 
 .content-between {
@@ -25,12 +49,21 @@ ul, ol {
 }
 
 .btn {
-    background-color: #00bcd4;
+    background-color: rgba(0, 188, 212, 1);
     color: #fff;
 }
 
+.btn:hover {
+    color: #fff;
+    background-color: rgba(0, 188, 212, 0.7);
+}
+
 .btn-warning {
-    background-color: #ff8181;
+    background-color: rgba(255, 129, 129, 1.0);
+}
+
+.btn-warning:hover {
+    background-color: rgba(255, 129, 129, 0.7);
 }
 
 
@@ -40,15 +73,11 @@ ul, ol {
 */
 
 #header {
-    background-color: yellow;
     padding: 25px 0;
     background-color: #fff;
     box-shadow: 0 0 2px -1px gray;
-}
-
-.header-title {
-    font-size: 32px;
-    font-weight: normal;
+    position: fixed;
+    width: 100%;
 }
 
 .header-list {
@@ -82,4 +111,74 @@ ul, ol {
     padding: 5px;
     border-radius: 8px;
 }
+
+
+
+
+
+
+/*
+    登録フォームのスタイル
+*/
+
+.form-wrapper {
+    width: 600px;
+    margin: 0 auto;
+}
+
+.form-wrapper h2 {
+    text-align: center;
+}
+
+.form-wrapper form {
+    padding: 50px;
+    margin-top: 40px;
+    border: 1px solid #d0d0d0;
+    border-radius: 15px;
+}
+
+.form-wrapper form p {
+    margin-top: 50px;
+}
+
+.form-wrapper form p:first-child {
+    margin-top: 0;
+}
+
+.form-text {
+    width: 100%;
+    padding: 4px;
+    font-size: 24px;
+    margin-top: 15px;
+    background-color: #fcfcfc;
+}
+
+.form-button {
+    background-color: rgba(0, 188, 212, 1);
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin-top: 25px;
+}
+
+
+
+/*
+    管理者登録フォームのスタイル
+*/
+
+#admin-registration {
+    padding: 80px 0;
+}
+
+
+
+
+
+
+
+
+
+
 
