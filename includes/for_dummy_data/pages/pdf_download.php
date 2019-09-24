@@ -6,15 +6,17 @@
 
 <?php
    
-    require_once(dirname(__FILE__) . "/lib/TCPDF/tcpdf.php");
-    require_once(dirname(__FILE__) . "/lib/TCPDF/FPDI/autoload.php");
-    require_once(dirname(__FILE__) . "/get_html_data.php");
+    require_once(dirname(__FILE__) . "/../../../lib/TCPDF/tcpdf.php");
+    require_once(dirname(__FILE__) . "/../../../lib/TCPDF/FPDI/autoload.php");
+    require_once(dirname(__FILE__) . "/../func/get_html_data.php");
 
     use setasign\Fpdi\TcpdfFpdi;
+
     $pdf = new TcpdfFpdi();
-   
+
     // Set-Margin
-    $pdf->SetMargins(0, 0, 0);
+    $pdf->SetMargins(25, 0, 25);
+
     // Set-Cell-padding
     $pdf->SetCellPadding(0);
     // Auto New Page
@@ -33,7 +35,7 @@
     $pdf->SetFont($font, '', 10);
    
     // PDF READING
-    $pdf->setSourceFile('./template.pdf');
+    $pdf->setSourceFile(dirname(__FILE__) . '/../pdf/template.pdf');
     $page = $pdf->importPage(1);
     $pdf->useTemplate($page);
    
@@ -42,10 +44,6 @@
    
     // Output-/n
     $pdf->Ln();
-   
-    // Output-Cell
-    //$pdf->Cell(70, 10, '', 1, 0, 'L');
-   
     $pdf->Ln();
 
     // Get Dummy_data
@@ -54,10 +52,8 @@
     // Writting HTML >>> PDF
     $pdf->writeHTML($html, true, 0, true, 0);
    
-    // Output-img
-    //$pdf->Image('./image/image.jpg', 10, 10);
-    
     ob_end_clean();
     $date = date( 'Ym',time());
     // Download-PDF
     $pdf->Output(sprintf('%s_kinmu-hyo.pdf',$date), 'D');
+    exit;

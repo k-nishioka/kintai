@@ -22,6 +22,3 @@
         </nav>
     </div>
 </header>
-<footer>
-<br>
-<a href="pdf_download.php" class="btn footer-btn">PDFダウンロード</a>
