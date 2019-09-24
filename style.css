@@ -147,13 +147,66 @@ ul, ol {
     background-color: #fcfcfc;
 }
 
+.reset-select-style {
+    overflow: hidden;
+}
+
+.reset-select-style select {
+	cursor: pointer;
+    text-overflow: ellipsis;
+	border: none;
+	outline: none;
+	background: transparent;
+	background-image: none;
+	box-shadow: none;
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+.reset-select-style select::-ms-expand {
+    display: none;
+}
+
+.form-select {
+    margin-top: 15px;
+    width: 60%;
+    position: relative;
+	border: 1px solid #bbbbbb;
+	background: #ffffff;
+}
+
+.form-select::before {
+    position: absolute;
+	top: 0.8em;
+	right: 0.9em;
+    content: '';
+	border-left: 6px solid transparent;
+	border-right: 6px solid transparent;
+	border-top: 6px solid #666666;
+}
+
+.form-select::after {
+    position: absolute;
+	top: 0;
+	right: 2.5em;
+	bottom: 0;
+	content: '';
+	border-left: 1px solid #bbbbbb;
+}
+
+.form-select select {
+    padding: 4px;
+    font-size: 16px;
+	color: #666666;
+}
+
 .form-button {
     background-color: rgba(0, 188, 212, 1);
     color: #fff;
     border: none;
     padding: 10px 15px;
     border-radius: 10px;
-    margin-top: 25px;
+    margin-top: 40px;
 }
 
 
