@@ -78,21 +78,19 @@ class Database
     }
 
     /**
-     * 名前とメールアドレスからユーザーを取得するメソッド
+     * メールアドレスからユーザーを取得するメソッド
      *
-     * @param string $name
      * @param string $mail
      * @return array
      */
-    public function getUserFrom($name, $mail)
+    public function getUserFrom($mail)
     {
         $mydbh = $this->dbh;
-        $sql = "SELECT * FROM `users` WHERE name = ? AND mail = ?";
+        $sql = "SELECT * FROM `users` WHERE mail = ?";
 
         try {
             $prepare = $mydbh->prepare($sql);
-            $prepare->bindValue(1, (string)$name, PDO::PARAM_STR);
-            $prepare->bindValue(2, (string)$mail, PDO::PARAM_STR);
+            $prepare->bindValue(1, (string)$mail, PDO::PARAM_STR);
             $prepare->execute();
             $result = $prepare->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {

@@ -1,13 +1,16 @@
 <?php
 
 require_once(dirname(__FILE__) . "/../includes/network/database.php");
+require_once(dirname(__FILE__) . "/../includes/function.php");
+
 
 $db = new Database();
 
 if (isset($_POST['registration'])) {
     $db->createUser($_POST['name'], $_POST['employeeNum'], $_POST['pass'], $_POST['mail']);
-    $me = $db->getUserFrom($_POST['name'], $_POST['mail']);
+    $me = $db->getUserFrom($_POST['mail']);
     $db->createHierarchicalRelationships($me['id'], $_POST['boss']);
+    userLogin($_POST['mail'], $_POST['pass']);
 } else {
     $adminUsers = $db->getAdminUsers();
 }
