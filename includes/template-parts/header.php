@@ -10,8 +10,7 @@
     <link rel="stylesheet" href="/attendance_management/style.css">
 </head>
 
-<body style="height: 500px">
-
+<body>
 <header id="header">
     <div class="inner">
         <nav class="content-between">
@@ -23,14 +22,5 @@
             </ul>
         </nav>
     </div>
-<<<<<<< HEAD
-</header>
-=======
 </header>
 <main>
-
-<!-- Review by leo: ここはheader.phpなので、footerタグがあるのがおかしいかと -->
-<footer>
-<br>
-<a href="pdf_download.php" class="btn footer-btn">PDFダウンロード</a>
->>>>>>> 77e321c5ca8e504bae2370da51d2891eaa98d362
