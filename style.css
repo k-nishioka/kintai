@@ -1,5 +1,5 @@
 /*
-    全体の九通スタイル
+    全体の共通スタイル
 */
 
 body {
@@ -105,6 +105,12 @@ ul, ol {
     フッタースタイル
 */
 
+.footer-btn {
+    text-decoration: none;
+    margin: auto 0;
+    padding: 5px;
+    border-radius: 8px;
+}
 
 
 
