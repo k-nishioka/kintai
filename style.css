@@ -241,7 +241,7 @@ ul, ol {
     font-size: 20px;
 }
 
-.main-header .right p {
+.date-title {
     margin: 0 16px;
 }
 
@@ -276,18 +276,6 @@ ul, ol {
     font-size: 16px;
     line-height: 16px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 .main-content {
     padding: 40px 0;
@@ -343,14 +331,10 @@ ul, ol {
     margin-top: 10px;
 }
 
+.sunday-style {
+    background-color: rgba(255, 129, 129, 0.7);
+}
 
-
-
-
-
-
-
-
-
-
-
+.saturday-style {
+    background-color: rgba(0, 188, 212, 0.7);
+}
