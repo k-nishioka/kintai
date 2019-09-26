@@ -250,18 +250,12 @@ ul, ol {
     display: flex;
 }
 
-.me-btn-wrapper {
-    padding-top: 10px;
-    padding-right: 50px;
-}
-
 .main-admin-btns form {
     display: flex;
 }
 
 .main-admin-btns .form-select {
-    margin-top: 0;
-    margin-right: 10px;
+    margin: 0 10px 0 50px;
     width: 300px;
 }
 
@@ -332,9 +326,13 @@ ul, ol {
 }
 
 .sunday-style {
-    background-color: rgba(255, 129, 129, 0.7);
+    background-color: rgba(255, 129, 129, 0.5);
 }
 
 .saturday-style {
-    background-color: rgba(0, 188, 212, 0.7);
+    background-color: rgba(0, 188, 212, 0.5);
 }
+
+
+
+

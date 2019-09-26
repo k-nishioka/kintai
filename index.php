@@ -1,7 +1,23 @@
 <?php
 
+// ini_set( 'display_errors', 1 );
+// ini_set( 'error_reporting', E_ALL );
 require_once(dirname(__FILE__) . "/includes/network/database.php");
 require_once(dirname(__FILE__) . "/includes/function.php");
+
+// TODO: 下の4行はログインが繋ぎこみ完了したら削除する
+if (empty($_SESSION['user_id'])) {
+    session_start();
+    $_SESSION['user_id'] = 1;
+}
+
+checkUserLoggedIn();
+
+$dbh = new Database();
+
+$me = $dbh->getUserBy(1);
+$users = $dbh->getUsers();
+$currentUser = !is_null($_SESSION['current_user']) ? $dbh->getUserBy($_SESSION['current_user']) : $me;
 
 
 date_default_timezone_set('Asia/Tokyo');
@@ -21,7 +37,31 @@ $prevMonth = date('Y-m', mktime(0, 0, 0, date('m', $currentTime) - 1, 1, date('Y
 $nextMonth = date('Y-m', mktime(0, 0, 0, date('m', $currentTime) + 1, 1, date('Y', $currentTime)));
 
 
+$totalPaidDays = 0;
+$totalWorkDays = 0;
+$totalWorkTimes = 0;
+$totalOverTimes = 0;
+$totalMidnightTimes = 0;
+$comments = '';
+
+
+if (!empty($_POST['choice_user'])) {
+    echo '選択ボタン完了';
+    if (!empty($_POST['attendance_user'])) {
+        echo 'ユーザーが選択されている';
+        $currentUserId = $dbh->getUserBy($_POST['attendance_user']);
+        $_SESSION['current_user'] = $currentUserId['id'];
+        header("Location: index.php?date=" . $currentMonth);
+    }
+} elseif (!empty($_POST['choice_self'])) {
+    echo '自分ボタン完了';
+    $_SESSION['current_user'] = $me['id'];
+    header("Location: index.php?date=" . $currentMonth);
+}
+
+
 require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
+
 ?>
 
 <section id="attendance-main">
@@ -30,7 +70,7 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
 
             <div class="main-header content-between">
                 <div class="left">
-                    <h4 class="subtitle-font">松崎の勤務時間表</h4>
+                    <h4 class="subtitle-font"><?php echo $currentUser['name']; ?>の勤務時間表</h4>
                 </div>
                 <div class="right content-between">
                     <a href="?date=<?php echo $prevMonth; ?>">＜前の月</a>
@@ -45,22 +85,26 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                 </div>
             </div>
 
-            <div class="main-admin-btns">
-                <div class="me-btn-wrapper">
-                    <a href="#" class="form-button">自分の勤務表を見る</a>
+            <?php if ($me['is_admin'] == 1): ?>
+                <div class="main-admin-btns">
+                    <form method="POST">
+                        <div class="for-center">
+                            <input class="form-button subtitle-font" type="submit" value="自分の勤務表を見る" name="choice_self">
+                        </div>
+                        <div class="reset-select-style form-select">
+                            <select name="attendance_user">
+                                <option value="" hidden>ユーザーを選んでください</option>
+                                <?php foreach ($users as $user): ?>
+                                    <option value="<?php echo $user['id']; ?>"><?php echo $user['name']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="for-center">
+                            <input class="form-button subtitle-font" type="submit" value="選択" name="choice_user">
+                        </div>
+                    </form>
                 </div>
-                <form method="POST">
-                    <div class="reset-select-style form-select">
-                        <select name="boss" required>
-                            <option value="" hidden>ユーザーを選んでください</option>
-                            <option value="1" hidden>松崎</option>
-                        </select>
-                    </div>
-                    <div class="for-center">
-                        <input class="form-button subtitle-font" type="submit" value="選択" name="registration">
-                    </div>
-                </form>
-            </div>
+            <?php endif;?>
 
             <div class="main-content">
                 <table>
@@ -72,8 +116,7 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                         <th>休憩時間</th>
                         <th>勤務時間</th>
                         <th>残業時間</th>
-                        <th>深夜残業時間</th>
-                        <th>合計</th>
+                        <th>深夜時間</th>
                         <th>社外業務</th>
                         <th>社内業務</th>
                         <th>社内業務内容</th>
@@ -81,8 +124,11 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                     </tr>
                     <?php
                         for ($day = 1; $day <= $currentMonthDays; $day++):
+
                             $dateTime = strtotime($currentMonth . '-' . $day);
                             $dayOfWeek = date('w', $dateTime);
+                            $attendance = $dbh->getAttendanceBy(date('Y-m-d', $dateTime));
+
                             if ($dayOfWeek == 0) {
                                 echo '<tr class="sunday-style">';
                             } elseif ($dayOfWeek == 6) {
@@ -90,22 +136,46 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                             } else {
                                 echo '<tr>';
                             }
+
+                            if (is_null($attendance)):
+                                echo '<td>' . $day . '日</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
+                            else:
+                                $startTime = substr($attendance['start_time'], 11, 5);
+                                $endTime = substr($attendance['end_time'], 11, 5);  
+                                $diffTime = getDiffTime($attendance['start_time'], $attendance['end_time'], $attendance['breaktime_minute']);
+                                $internalType = $dbh->getInternalBusinessTypeBy($attendance['internal_business_id']);
+                                $remark = $dbh->getRemarkBy($attendance['remarks_id']);
                     ?>
                             <td><?php echo $day; ?>日</td>
                             <td><?php echo $week[$dayOfWeek]; ?>曜</td>
-                            <td>10:00</td>
-                            <td>20:00</td>
-                            <td>60分</td>
-                            <td>8時間</td>
-                            <td>1時間</td>
-                            <td></td>
-                            <td>9時間</td>
-                            <td>9時間</td>
-                            <td></td>
-                            <td></td>
-                            <td>遅刻遅遅刻遅遅刻遅遅刻遅遅刻遅遅刻遅遅刻遅遅刻遅遅刻遅刻</td>
+                            <td><?php echo $startTime ?></td>
+                            <td><?php echo $endTime; ?></td>
+                            <td><?php echo $attendance['breaktime_minute']; ?>分</td>
+                            <td><?php echo $diffTime['workTime']; ?>時間</td>
+                            <td><?php echo $diffTime['overTime']; ?>時間</td>
+                            <td><?php echo $diffTime['midnight']; ?>時間</td>
+                            <?php
+                                if ($attendance['business_type_id'] == 1) {
+                                    echo '<td></td><td>' . $diffTime['workTime'] . '時間</td>';
+                                } elseif ($attendance['business_type_id'] == 2) {
+                                    echo '<td>' . $diffTime['workTime'] .'時間</td><td></td>';
+                                } else {
+                                    echo '<td></td><td></td>';
+                                }
+                            ?>
+                            <td><?php echo $internalType['name']; ?></td>
+                            <td><?php echo $remark['name']; ?></td>
                         </tr>
-                    <?php endfor; ?>
+                    <?php
+                                if ($remark['id'] == 1) $totalPaidDays++;
+                                $totalWorkDays++;
+                                $totalWorkTimes += $diffTime['workTime'];
+                                $totalOverTimes += $diffTime['overTime'];
+                                $totalMidnightTimes += $diffTime['midnight'];
+                                if (!is_null($attendance['comment'])) $comments = $attendance['comment'] . '<br>';
+                            endif;
+                        endfor; 
+                    ?>
                 </table>
             </div>
 
@@ -117,22 +187,20 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                             <th>出勤日数</th>
                             <th>勤務時間合計</th>
                             <th>残業時間合計</th>
-                            <th>深夜残業合計</th>
-                            <th>合計</th>
+                            <th>深夜時間合計</th>
                         </tr>
                         <tr>
-                            <td>0日</td>
-                            <td>22日</td>
-                            <td>176時間</td>
-                            <td>4時間</td>
-                            <td>0時間</td>
-                            <td>180時間</td>
+                            <td><?php echo $totalPaidDays; ?>日</td>
+                            <td><?php echo $totalWorkDays; ?>日</td>
+                            <td><?php echo $totalWorkTimes; ?>時間</td>
+                            <td><?php echo $totalOverTimes; ?>時間</td>
+                            <td><?php echo $totalMidnightTimes; ?>時間</td>
                         </tr>
                     </table>
                     <table class="comment-table">
                         <tr>
                             <th>備考</th>
-                            <td>9/2 電車遅延で遅刻<br>9/3 電車遅延で遅刻</td>
+                            <td><?php echo $comments; ?></td>
                         </tr>
                     </table>
                 </div>
