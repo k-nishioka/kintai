@@ -206,7 +206,7 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                 </div>
                 <div class="main-footer-btns">
                     <div class="for-center ">
-                        <a href="#" class="form-button">出社する</a>
+                        <a href="pages/attendance.php" class="form-button">出社する</a>
                         <a href="#" class="form-button">PDFダウンロード</a>
                     </div>
                 </div>
