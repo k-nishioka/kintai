@@ -64,9 +64,23 @@ class Database
     }
 
     /**
+     * 全ユーザーを取得するメソッド
+     *
+     * @return array 二次元配列
+     */
+    public function getUsers()
+    {
+        $mydbh = $this->dbh;
+        $sql = "SELECT * FROM `users`";
+        $prepare = $mydbh->query($sql);
+        $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    /**
      * 全管理者ユーザーを取得するメソッド
      *
-     * @return array 多次元配列
+     * @return array 二次元配列
      */
     public function getAdminUsers()
     {
@@ -91,6 +105,30 @@ class Database
         try {
             $prepare = $mydbh->prepare($sql);
             $prepare->bindValue(1, (string)$mail, PDO::PARAM_STR);
+            $prepare->execute();
+            $result = $prepare->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            // TODO: エラーをログに出力できるようにしたい
+            echo 'Error: ' . $e->getMessage();
+            die();
+        }
+        return $result;
+    }
+
+    /**
+     * ユーザーIDからユーザーを取得するメソッド
+     *
+     * @param int $id
+     * @return array
+     */
+    public function getUserBy($id)
+    {
+        $mydbh = $this->dbh;
+        $sql = "SELECT * FROM `users` WHERE id = ?";
+
+        try {
+            $prepare = $mydbh->prepare($sql);
+            $prepare->bindValue(1, (int)$id, PDO::PARAM_INT);
             $prepare->execute();
             $result = $prepare->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
@@ -128,8 +166,116 @@ class Database
         }
     }
 
+    /**
+     * 日にちの文字列型で勤怠情報を取得するメソッド
+     * 日付の書き方は"0000-00-00 00:00:00"
+     * 右側にワイルドカードを付けてるので、日時検索しやすいです
+     *
+     * @param string $date
+     * @return array | NULL
+     */
+    public function getAttendanceBy($date)
+    {
+        if (!empty($date)) {
+            $mydbh = $this->dbh;
+            $sql = "SELECT * FROM `attendances` WHERE start_time LIKE ?";
+            $date = $date . "%";
 
+            try {
+                $prepare = $mydbh->prepare($sql);
+                $prepare->bindValue(1, (string)$date, PDO::PARAM_STR);
+                $prepare->execute();
+                $result = $prepare->fetch(PDO::FETCH_ASSOC);
+            } catch (PDOException $e) {
+                // TODO: エラーをログに出力できるようにしたい
+                echo 'Error: ' . $e->getMessage();
+                die();
+            }
 
+            return $result ? $result : NULL;
+        }
+    }
+
+    /**
+     * 業務内容の種類を取得するメソッド
+     *
+     * @param int $id
+     * @return array | NULL
+     */
+    public function getBusinessTypeBy($id)
+    {
+        if (!empty($id)) {
+            $mydbh = $this->dbh;
+            $sql = "SELECT * FROM `business_types` WHERE id = ?";
+
+            try {
+                $prepare = $mydbh->prepare($sql);
+                $prepare->bindValue(1, (int)$id, PDO::PARAM_INT);
+                $prepare->execute();
+                $result = $prepare->fetch(PDO::FETCH_ASSOC);
+            } catch (PDOException $e) {
+                // TODO: エラーをログに出力できるようにしたい
+                echo 'Error: ' . $e->getMessage();
+                die();
+            }
+
+            return $result ? $result : NULL;
+        }
+    }
+
+    /**
+     * 社内業務内容の種類を取得するメソッド
+     *
+     * @param int $id
+     * @return array | NULL
+     */
+    public function getInternalBusinessTypeBy($id)
+    {
+        if (!empty($id)) {
+            $mydbh = $this->dbh;
+            $sql = "SELECT * FROM `internal_business_types` WHERE id = ?";
+
+            try {
+                $prepare = $mydbh->prepare($sql);
+                $prepare->bindValue(1, (int)$id, PDO::PARAM_INT);
+                $prepare->execute();
+                $result = $prepare->fetch(PDO::FETCH_ASSOC);
+            } catch (PDOException $e) {
+                // TODO: エラーをログに出力できるようにしたい
+                echo 'Error: ' . $e->getMessage();
+                die();
+            }
+
+            return $result ? $result : NULL;
+        }
+    }
+
+    /**
+     * 備考の種類を取得するメソッド
+     *
+     * @param int $id
+     * @return array | NULL
+     */
+    public function getRemarkBy($id)
+    {
+        if (!empty($id)) {
+            $mydbh = $this->dbh;
+            $sql = "SELECT * FROM `remarks` WHERE id = ?";
+
+            try {
+                $prepare = $mydbh->prepare($sql);
+                $prepare->bindValue(1, (int)$id, PDO::PARAM_INT);
+                $prepare->execute();
+                $result = $prepare->fetch(PDO::FETCH_ASSOC);
+            } catch (PDOException $e) {
+                // TODO: エラーをログに出力できるようにしたい
+                echo 'Error: ' . $e->getMessage();
+                die();
+            }
+
+            return $result ? $result : NULL;
+        }
+    }
 
 
 

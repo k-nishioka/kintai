@@ -78,6 +78,7 @@ ul, ol {
     box-shadow: 0 0 2px -1px gray;
     position: fixed;
     width: 100%;
+    z-index: 10;
 }
 
 .header-list {
@@ -207,6 +208,12 @@ ul, ol {
     padding: 10px 15px;
     border-radius: 10px;
     margin-top: 40px;
+    transition: 0.3s;
+}
+
+.form-button:hover {
+    background-color: rgba(0, 188, 212, 0.8);
+    color: #fff;
 }
 
 
@@ -221,10 +228,110 @@ ul, ol {
 
 
 
+/*
+    メインページのスタイル
+*/
 
+.attendance-main-wrapper {
+    /* background-color: yellow; */
+    padding: 80px 0;
+}
 
+.main-header .right {
+    font-size: 20px;
+}
 
+.date-title {
+    margin: 0 16px;
+}
 
+.main-admin-btns {
+    padding-top: 40px;
+    display: flex;
+}
+
+.main-admin-btns form {
+    display: flex;
+}
+
+.main-admin-btns .form-select {
+    margin: 0 10px 0 50px;
+    width: 300px;
+}
+
+.main-admin-btns .form-select select {
+    padding: 9px 4px;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.main-admin-btns .form-button {
+    margin-top: 0;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.main-content {
+    padding: 40px 0;
+}
+
+.main-content table {
+    display: block;
+    width: 100%;
+    overflow-x: scroll;
+    white-space: nowrap;
+}
+
+.main-content th {
+    padding: 4px 12px;
+    border: 1px solid #d0d0d0;
+}
+
+.main-content td {
+    padding: 4px 12px;
+    border: 1px solid #d0d0d0;
+    text-align: right;
+}
+
+.main-footer {
+    padding: 40px 0;
+}
+
+.main-footer th {
+    padding: 4px 12px;
+    border: 1px solid #d0d0d0;
+}
+
+.main-footer td {
+    padding: 4px 12px;
+    border: 1px solid #d0d0d0;
+    text-align: right;
+}
+
+.comment-table {
+    margin-top: 40px;
+}
+
+.comment-table th, .comment-table td {
+    padding: 8px 12px;
+}
+
+.main-footer-btns div {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-footer-btns div a:first-child {
+    margin-top: 10px;
+}
+
+.sunday-style {
+    background-color: rgba(255, 129, 129, 0.5);
+}
+
+.saturday-style {
+    background-color: rgba(0, 188, 212, 0.5);
+}
 
 
 
