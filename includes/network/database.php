@@ -197,6 +197,19 @@ class Database
     }
 
     /**
+     * 全種類の業務内容を取得するメソッド
+     *
+     * @return array 二次元配列
+     */
+    public function getBusinessTypes() {
+        $mydbh = $this->dbh;
+        $sql = "SELECT * FROM `business_types`";
+        $prepare = $mydbh->query($sql);
+        $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    /**
      * 業務内容の種類を取得するメソッド
      *
      * @param int $id
@@ -223,8 +236,22 @@ class Database
         }
     }
 
+
     /**
-     * 社内業務内容の種類を取得するメソッド
+     * 全種類の管社内業務内容を取得するメソッド
+     *
+     * @return array 二次元配列
+     */
+    public function getInternalBusinessTypes() {
+        $mydbh = $this->dbh;
+        $sql = "SELECT * FROM `internal_business_types`";
+        $prepare = $mydbh->query($sql);
+        $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    /**
+     * 社内業務内容を種類を取得するメソッド
      *
      * @param int $id
      * @return array | NULL
@@ -248,6 +275,20 @@ class Database
 
             return $result ? $result : NULL;
         }
+    }
+
+
+    /**
+     * 全種類の備考を取得するメソッド
+     *
+     * @return array 二次元配列
+     */
+    public function getRemarks() {
+        $mydbh = $this->dbh;
+        $sql = "SELECT * FROM `remarks`";
+        $prepare = $mydbh->query($sql);
+        $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
     }
 
     /**
@@ -276,6 +317,46 @@ class Database
             return $result ? $result : NULL;
         }
     }
+
+    /**
+     * 新規の出勤を作成するメソッド
+     *
+     * @param string $day
+     * @param string $hour
+     * @param string $minute
+     * @param int $businessType
+     * @param int $userId
+     * @return void
+     */
+    public function createAttendance($day, $hour, $minute, $businessType, $userId)
+    {
+        if (!empty($day) && !empty($hour) && !empty($minute) && !empty($businessType)) {
+
+            $mydbh = $this->dbh;
+            $date = $day . " " . $hour . ":" . $minute . ":00"; 
+            $sql = "INSERT INTO `attendances` (start_time, business_type_id, user_id) VALUE (?, ?, ?)";
+
+            try {
+                $prepare = $mydbh->prepare($sql);
+                $prepare->bindValue(1, (string)$date, PDO::PARAM_STR);
+                $prepare->bindValue(2, (int)$businessType, PDO::PARAM_INT);
+                $prepare->bindValue(3, (int)$userId, PDO::PARAM_INT);
+                $prepare->execute();
+            } catch (PDOException $e) {
+                // TODO: エラーをログに出力できるようにしたい
+                echo 'Error: ' . $e->getMessage();
+                die();
+            }
+        }
+    }
+
+
+
+
+
+
+
+
 
 
 
