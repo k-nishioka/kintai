@@ -445,21 +445,6 @@ class Database
             return $result ? $result : NULL;
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
 ?>

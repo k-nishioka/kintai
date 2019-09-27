@@ -25,8 +25,7 @@ function userLogin($mail, $pass)
         if (password_verify($pass, $user['pass'])) {
 
             session_start();
-            $_SESSION['my_id'] = $user['id'];
-            $_SESSION['my_name'] = $user['name'];
+            $_SESSION['user_id'] = $user['id'];
             // TODO:   本番環境ではパスを変更する/
             header("Location: /attendance_management/index.php");
         }
@@ -48,11 +47,5 @@ function checkAttendance()
     if (is_null($latestAttendance)) return false;
     return is_null($latestAttendance['end_time']) ? true : false;
 }
-
-
-
-
-
-
 
 ?>

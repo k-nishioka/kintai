@@ -77,9 +77,4 @@ function getDiffTime($startTime, $endTime)
     return $diffTime;
 }
 
-
-
-
-
-
 ?>

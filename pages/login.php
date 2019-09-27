@@ -7,12 +7,7 @@ require_once(dirname(__FILE__) . "/../includes/network/function.php");
 $db = new Database();
 
 if (isset($_POST['login'])) {
-    var_dump($_POST['mail']);
-    var_dump($_POST['pass']);
-    // $db->createUser($_POST['name'], $_POST['employeeNum'], $_POST['pass'], $_POST['mail']);
-    // $me = $db->getUserFrom($_POST['mail']);
-    // $db->createHierarchicalRelationships($me['id'], $_POST['boss']);
-    // userLogin($_POST['mail'], $_POST['pass']);
+    userLogin($_POST['mail'], $_POST['pass']);
 }
 
 
