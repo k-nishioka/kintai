@@ -3,7 +3,7 @@
 // ini_set( 'display_errors', 1 );
 // ini_set( 'error_reporting', E_ALL );
 require_once(dirname(__FILE__) . "/includes/network/database.php");
-require_once(dirname(__FILE__) . "/includes/function.php");
+require_once(dirname(__FILE__) . "/includes/network/function.php");
 
 // TODO: 下の4行はログインが繋ぎこみ完了したら削除する
 if (empty($_SESSION['user_id'])) {
@@ -13,11 +13,12 @@ if (empty($_SESSION['user_id'])) {
 
 checkUserLoggedIn();
 
-$dbh = new Database();
+$db = new Database();
 
-$me = $dbh->getUserBy(1);
-$users = $dbh->getUsers();
-$currentUser = !is_null($_SESSION['current_user']) ? $dbh->getUserBy($_SESSION['current_user']) : $me;
+$me = $db->getUserBy(1);
+$users = $db->getUsers();
+$currentUser = !is_null($_SESSION['current_user']) ? $db->getUserBy($_SESSION['current_user']) : $me;
+$isAttendance = checkAttendance();
 
 
 date_default_timezone_set('Asia/Tokyo');
@@ -49,7 +50,7 @@ if (!empty($_POST['choice_user'])) {
     echo '選択ボタン完了';
     if (!empty($_POST['attendance_user'])) {
         echo 'ユーザーが選択されている';
-        $currentUserId = $dbh->getUserBy($_POST['attendance_user']);
+        $currentUserId = $db->getUserBy($_POST['attendance_user']);
         $_SESSION['current_user'] = $currentUserId['id'];
         header("Location: index.php?date=" . $currentMonth);
     }
@@ -127,7 +128,7 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
 
                             $dateTime = strtotime($currentMonth . '-' . $day);
                             $dayOfWeek = date('w', $dateTime);
-                            $attendance = $dbh->getAttendanceBy(date('Y-m-d', $dateTime));
+                            $attendance = $db->getAttendanceFrom(date('Y-m-d', $dateTime));
 
                             if ($dayOfWeek == 0) {
                                 echo '<tr class="sunday-style">';
@@ -143,8 +144,8 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                                 $startTime = substr($attendance['start_time'], 11, 5);
                                 $endTime = substr($attendance['end_time'], 11, 5);  
                                 $diffTime = getDiffTime($attendance['start_time'], $attendance['end_time'], $attendance['breaktime_minute']);
-                                $internalType = $dbh->getInternalBusinessTypeBy($attendance['internal_business_id']);
-                                $remark = $dbh->getRemarkBy($attendance['remarks_id']);
+                                $internalType = $db->getInternalBusinessTypeBy($attendance['internal_business_id']);
+                                $remark = $db->getRemarkBy($attendance['remarks_id']);
                     ?>
                             <td><?php echo $day; ?>日</td>
                             <td><?php echo $week[$dayOfWeek]; ?>曜</td>
@@ -200,13 +201,18 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                     <table class="comment-table">
                         <tr>
                             <th>備考</th>
+                            <?php if ($comments == '') $comments = '備考はありません'; ?>
                             <td><?php echo $comments; ?></td>
                         </tr>
                     </table>
                 </div>
                 <div class="main-footer-btns">
                     <div class="for-center ">
-                        <a href="pages/attendance.php" class="form-button">出社する</a>
+                        <?php if ($isAttendance): ?>
+                            <a href="pages/retirement.php" class="form-button">退社する</a>
+                        <?php else: ?>
+                            <a href="pages/attendance.php" class="form-button">出社する</a>
+                        <?php endif; ?>
                         <a href="#" class="form-button">PDFダウンロード</a>
                     </div>
                 </div>
