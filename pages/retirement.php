@@ -1,7 +1,6 @@
 <?php
 
 require_once(dirname(__FILE__) . "/../includes/network/database.php");
-require_once(dirname(__FILE__) . "/../includes/network/function.php");
 require_once(dirname(__FILE__) . "/../includes/function.php");
 
 checkUserLoggedIn();
@@ -19,6 +18,8 @@ if (!empty($_POST['retirement'])) {
             $_POST['retirement_minutes'], $_POST['comment'], $_POST['remark'],
             $_POST['internal_business_type']
         );
+        // TODO:   本番環境ではパスを変更する/
+        header("Location: /attendance_management/index.php");
     }
 }
 

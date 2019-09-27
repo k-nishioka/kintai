@@ -1,20 +1,13 @@
 <?php
 
-// ini_set( 'display_errors', 1 );
-// ini_set( 'error_reporting', E_ALL );
 require_once(dirname(__FILE__) . "/includes/network/database.php");
 require_once(dirname(__FILE__) . "/includes/network/function.php");
+require_once(dirname(__FILE__) . "/includes/function.php");
 
-// TODO: 下の4行はログインが繋ぎこみ完了したら削除する
-if (empty($_SESSION['user_id'])) {
-    session_start();
-    $_SESSION['user_id'] = 1;
-}
 
 checkUserLoggedIn();
 
 $db = new Database();
-
 $me = $db->getUserBy(1);
 $users = $db->getUsers();
 $currentUser = !is_null($_SESSION['current_user']) ? $db->getUserBy($_SESSION['current_user']) : $me;

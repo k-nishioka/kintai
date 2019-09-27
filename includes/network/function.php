@@ -24,11 +24,9 @@ function userLogin($mail, $pass)
 
         if (password_verify($pass, $user['pass'])) {
 
-            echo 'ログイン成功';
-            // session_start();
-            // $_SESSION['my_id'] = $user['id'];
-            // $_SESSION['my_name'] = $user['name'];
-
+            session_start();
+            $_SESSION['my_id'] = $user['id'];
+            $_SESSION['my_name'] = $user['name'];
             // TODO:   本番環境ではパスを変更する/
             header("Location: /attendance_management/index.php");
         }
