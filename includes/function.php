@@ -1,39 +1,5 @@
 <?php
 
-require_once(dirname(__FILE__) . "/network/database.php");
-
-
-/**
- * ユーザーをログインさせるためのメソッド
- * - ログインできれば、そのままindex.phpにジャンプする
- * - セッションへの接続もそのままする
- *
- * @param string $mail
- * @param string $pass
- * @return void
- */
-function userLogin($mail, $pass)
-{
-    if (!empty($mail) && !empty($pass)) {
-
-        $mail = htmlspecialchars($mail, ENT_QUOTES, 'utf-8');
-        $pass = htmlspecialchars($pass, ENT_QUOTES, 'utf-8');
-
-        $dbh = new Database();
-        $user = $dbh->getUserFrom($mail);
-
-        if (password_verify($pass, $user['pass'])) {
-
-            echo 'ログイン成功';
-            // session_start();
-            // $_SESSION['my_id'] = $user['id'];
-            // $_SESSION['my_name'] = $user['name'];
-
-            // TODO:   本番環境ではパスを変更する/
-            header("Location: /attendance_management/index.php");
-        }
-    }
-}
 
 /**
  * ユーザーがログイン状態かどうかを確認するメソッド
@@ -62,7 +28,7 @@ function checkUserLoggedIn() {
  * @param string $endTime
  * @return array 
  */
-function getDiffTime($startTime, $endTime, $breakTime=NULL)
+function getDiffTime($startTime, $endTime)
 {
 
     $diffTime = array();
@@ -80,8 +46,9 @@ function getDiffTime($startTime, $endTime, $breakTime=NULL)
     $diffMinuts = $intervalMinutes % 60;
     $diffHours = $intervalHours % 60;
 
-    $breakMinutes = !is_null($breakTime) ? $breakTime : 0;
-    $workTime = ($intervalMinutes - $breakMinutes) / 60;
+    $totalWorkTime = $intervalMinutes / 60;
+    $breakMinutes = $totalWorkTime > 8 ? 60 : NULL;
+    $workTime = !is_null($breakMinutes) ? ($intervalMinutes - $breakMinutes) / 60 : $totalWorkTime;
     $overTime = $workTime > 8 ? $workTime - 8 : 0;
 
     $workDay = date('Y-m-d', mktime(0, 0, 0, date('m', $start), date('d', $start), date('Y', $start)));
@@ -104,12 +71,11 @@ function getDiffTime($startTime, $endTime, $breakTime=NULL)
         'workTime' => $workTime,
         'overTime' => $overTime,
         'midnight' => $midnightWork,
+        'breakMinutes' => $breakMinutes,
     );
 
     return $diffTime;
 }
-
-
 
 
 
