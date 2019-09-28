@@ -26,7 +26,6 @@ function userLogin($mail, $pass)
 
             session_start();
             $_SESSION['user_id'] = $user['id'];
-            // TODO:   本番環境ではパスを変更する/
             header("Location: /attendance_management/index.php");
         }
     }

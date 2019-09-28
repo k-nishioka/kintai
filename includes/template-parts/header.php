@@ -21,7 +21,6 @@ $adminURL = $http . "cmsidiv.php.xdomain.jp/attendance_management/pages/adminUse
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>勤怠管理システム</title>
-    <?php   //  TODO: 本番サーバーへの移行時は下の2つのCSSのパスを修正する ?>
     <link rel="stylesheet" href="/attendance_management/reset.css">
     <link rel="stylesheet" href="/attendance_management/style.css">
 </head>
@@ -30,7 +29,6 @@ $adminURL = $http . "cmsidiv.php.xdomain.jp/attendance_management/pages/adminUse
 <header id="header">
     <div class="inner">
         <nav class="content-between">
-            <!-- TODO: 本番環境では、index.phpにジャンプするようにする -->
             <h2 class="title-font"><a href="/attendance_management/index.php">勤怠管理システム</a></h2>
             <ul class="header-list">
             <?php if ($currentURL != $adminURL): ?>
