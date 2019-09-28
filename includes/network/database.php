@@ -24,7 +24,7 @@ class Database
      */
     public function __construct()
     {
-        $dns = "mysql:dbname=" . self::DB_NAME . ";host=" . self::HOST . ";charset=utf8mb4";
+        $dns = "mysql:dbname=" . self::DB_NAME . ";host=" . self::HOST . ";charset=utf8";
 
         try {
             $pdo = new PDO($dns, self::USER, self::PASS);
@@ -47,7 +47,7 @@ class Database
      * @param boolean $isBoss（管理者になるユーザーの確認）
      * @return void
      */
-    public function createUser($name, $employNum, $pass, $mail, $isAdmin=false)
+    public function createUser($name, $employNum, $pass, $mail, $isAdmin=0)
     {
         if (!empty($name) && !empty($employNum) && !empty($pass) && !empty($mail)) {
 
@@ -61,7 +61,7 @@ class Database
                 $prepare->bindValue(2, (int)$employNum, PDO::PARAM_INT);
                 $prepare->bindValue(3, (string)$mail, PDO::PARAM_STR);
                 $prepare->bindValue(4, (string)$pass, PDO::PARAM_STR);
-                $prepare->bindValue(5, (bool)$isAdmin, PDO::PARAM_BOOL);
+                $prepare->bindValue(5, (int)$isAdmin, PDO::PARAM_INT);
                 $prepare->execute();
             } catch (PDOException $e) {
                 // TODO: エラーをログに出力できるようにしたい
@@ -93,7 +93,7 @@ class Database
     public function getAdminUsers()
     {
         $mydbh = $this->dbh;
-        $sql = "SELECT * FROM `users` WHERE is_admin = true";
+        $sql = "SELECT * FROM `users` WHERE is_admin = 1";
         $prepare = $mydbh->query($sql);
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         return $result;
@@ -148,7 +148,7 @@ class Database
     }
 
     /**
-     * 管理あyユーザーと一般ユーザーの繋がり中間テーブルの作成メソッド
+     * 管理者ユーザーと一般ユーザーの繋がり中間テーブルの作成メソッド
      *
      * @param int $userId
      * @param int $bossId

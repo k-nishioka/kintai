@@ -2,11 +2,15 @@
 
 require_once(dirname(__FILE__) . "/../function.php");
 
-// TODO: URLのパスの設定を本番環境用に変換する
-$domain = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'];
+$http = empty($_SESSION['HTTPS']) ? 'http://' : 'https://';
+$domain = $http . $_SERVER['HTTP_HOST'];
 $currentURL = $domain . $_SERVER['REQUEST_URI'];
-$loginURL = "http://localhost/attendance_management/pages/login.php";
-$adminURL = "http://localhost/attendance_management/pages/adminUser/registration.php";
+/* ローカル環境用 */
+// $loginURL = "http://localhost/attendance_management/pages/login.php";
+// $adminURL = "http://localhost/attendance_management/pages/adminUser/registration.php";
+/* 本番環境用 */
+$loginURL = $http . "cmsidiv.php.xdomain.jp/attendance_management/pages/login.php";
+$adminURL = $http . "cmsidiv.php.xdomain.jp/attendance_management/pages/adminUser/registration.php";
 
 ?>
 
