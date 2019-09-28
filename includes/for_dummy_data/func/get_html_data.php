@@ -1,4 +1,11 @@
 <?php  
+    /**
+     * ダミーデータをヒアドキュメント形式で取得するメソッド
+     *
+     * @param void
+     * @return string
+     */
+
 function get_html_data(){
     $html= <<< EOF
     <h1>PDFダミーデータ</h1>

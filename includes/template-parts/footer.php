@@ -14,12 +14,16 @@
     require_once(dirname(__FILE__) . "/../../lib/TCPDF/FPDI/autoload.php");
     require_once(dirname(__FILE__) . "/../for_dummy_data/func/get_html_data.php");
     require_once(dirname(__FILE__) . "/../for_dummy_data/pages/pdf_template.php");
+    // Position NUM
+    define(RIGHT, 10);
+    define(TOP, 15);
+    define(LEFT, 10);
 
     use setasign\Fpdi\TcpdfFpdi;
     $pdf = new TcpdfFpdi();
    
-    // Set-Margin
-    $pdf->SetMargins(25, 25, 25);
+    // Margin制御
+    $pdf->SetMargins(LEFT, TOP, RIGHT);
     // Set-Cell-padding
     $pdf->SetCellPadding(0);
     // Auto New Page
@@ -31,11 +35,11 @@
     $pdf->setPrintFooter(false);
    
     // Prepare 1 page
-    $pdf->AddPage('L','A4');
+    $pdf->AddPage('P','A4');
    
     // Set Font-Type(For Japanese)
     $font = "kozgopromedium";
-    $pdf->SetFont($font, '', 10);
+    $pdf->SetFont($font, '', 8);
    
     // PDF READING
     $pdf->setSourceFile(dirname(__FILE__) . '/../for_dummy_data/pdf/template.pdf');
@@ -49,6 +53,7 @@
     // Get Dummy_data
     $html=get_html_data();
 
+    $tcpdf->setAutoPageBreak(true,20);
     // Writting HTML >>> PDF
     $pdf->writeHTML($html, true, 0, true, 0);
     
