@@ -8,15 +8,15 @@ class Database
     private $dbh;
 
     /* ローカル環境 */
-    // const DB_NAME = 'attendance_management';
-    // const HOST = 'localhost';
-    // const USER = 'root';
-    // const PASS = 'root';
+    const DB_NAME = 'attendance_management';
+    const HOST = 'localhost';
+    const USER = 'root';
+    const PASS = 'root';
     /* 本番環境用 */
-    const DB_NAME = 'cmsidiv_attendancemanagement';
-    const HOST = 'mysql1.php.xdomain.ne.jp';
-    const USER = 'cmsidiv_leo';
-    const PASS = 'leonardo';
+    // const DB_NAME = 'cmsidiv_attendancemanagement';
+    // const HOST = 'mysql1.php.xdomain.ne.jp';
+    // const USER = 'cmsidiv_leo';
+    // const PASS = 'leonardo';
 
     /**
      * インスタンス生成時に呼ばれる初期化メソッド

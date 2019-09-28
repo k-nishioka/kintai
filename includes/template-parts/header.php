@@ -6,11 +6,11 @@ $http = empty($_SESSION['HTTPS']) ? 'http://' : 'https://';
 $domain = $http . $_SERVER['HTTP_HOST'];
 $currentURL = $domain . $_SERVER['REQUEST_URI'];
 /* ローカル環境用 */
-// $loginURL = "http://localhost/attendance_management/pages/login.php";
-// $adminURL = "http://localhost/attendance_management/pages/adminUser/registration.php";
+$loginURL = "http://localhost/attendance_management/pages/login.php";
+$adminURL = "http://localhost/attendance_management/pages/adminUser/registration.php";
 /* 本番環境用 */
-$loginURL = $http . "cmsidiv.php.xdomain.jp/attendance_management/pages/login.php";
-$adminURL = $http . "cmsidiv.php.xdomain.jp/attendance_management/pages/adminUser/registration.php";
+// $loginURL = $http . "cmsidiv.php.xdomain.jp/attendance_management/pages/login.php";
+// $adminURL = $http . "cmsidiv.php.xdomain.jp/attendance_management/pages/adminUser/registration.php";
 
 ?>
 
