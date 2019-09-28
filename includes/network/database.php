@@ -64,26 +64,14 @@ class Database
         }
     }
 
-    /**
-     * SELECT文を発行するメソッド
-     * ダミーデータ取得用
-     *
-     * @param string $sql
-     * @return void
-     */
-    public function getData(){
-        return $this->dbh;
-        // $mydbh=$this->dbh;
-        // $sql="SELECT * FROM attendances ORDER BY id ASC";
 
-        // try {
-        //     $stmt=$mydbh->prepare($sql);
-        //     $stmt->execute();
 
-        // }catch(PDOException $e){
-        //     $e->getMessage();
-        // }
-    }
+
+
+
+
+
+
 }
 
 ?>
