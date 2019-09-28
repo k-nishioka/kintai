@@ -1,3 +1,15 @@
+<?php
+
+require_once(dirname(__FILE__) . "/../function.php");
+
+// TODO: URLのパスの設定を本番環境用に変換する
+$domain = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'];
+$currentURL = $domain . $_SERVER['REQUEST_URI'];
+$loginURL = "http://localhost/attendance_management/pages/login.php";
+$adminURL = "http://localhost/attendance_management/pages/adminUser/registration.php";
+
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -14,11 +26,20 @@
 <header id="header">
     <div class="inner">
         <nav class="content-between">
+            <!-- TODO: 本番環境では、index.phpにジャンプするようにする -->
             <h2 class="title-font"><a href="">勤怠管理システム</a></h2>
             <ul class="header-list">
-                <li class="header-item"><a href="#" class="btn header-btn">ログイン</a></li>
-                <li class="header-item"><a href="#" class="btn header-btn">ユーザー登録</a></li>
-                <li class="header-item"><a href="#" class="btn header-btn btn-warning">ログアウト</a></li>
+            <?php if ($currentURL != $adminURL): ?>
+                <?php if (empty($_SESSION['user_id'])): ?>
+                    <?php if ($currentURL == $loginURL): ?>
+                        <li class="header-item"><a href="registration.php" class="btn header-btn">ユーザー登録</a></li>
+                    <?php else: ?>
+                        <li class="header-item"><a href="login.php" class="btn header-btn">ログイン</a></li>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <li class="header-item"><a href="pages/logout.php<?php // echo $domain . "/attendance_management/pages/logout.php" ?>" class="btn header-btn btn-warning">ログアウト</a></li>
+                <?php endif; ?>
+            <?php endif; ?>
             </ul>
         </nav>
     </div>

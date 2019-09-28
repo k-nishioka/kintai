@@ -1,7 +1,7 @@
 <?php
 
 require_once(dirname(__FILE__) . "/../includes/network/database.php");
-require_once(dirname(__FILE__) . "/../includes/network/function.php");
+require_once(dirname(__FILE__) . "/../includes/function.php");
 
 checkUserLoggedIn();
 
@@ -11,6 +11,7 @@ $businessTypes = $db->getBusinessTypes();
 
 if (!empty($_POST['attendance'])) {
     $db->createAttendance($_POST['day'], $_POST['attend_hours'], $_POST['attend_minutes'], $_POST['business_type'], $_SESSION['user_id']);
+    // TODO:   本番環境ではパスを変更する/
     header("Location: /attendance_management/index.php");
 }
 
@@ -40,7 +41,7 @@ require_once(dirname(__FILE__) . "/../includes/template-parts/header.php");
                     <div class="reset-select-style form-select form-select-half" required>
                         <select name="attend_minutes" required>
                             <option value="" hidden>分</option>
-                            <?php for ($i = 0; $i <= 60; $i = $i + 5): ?>
+                            <?php for ($i = 0; $i < 60; $i = $i + 5): ?>
                                 <option value="<?php echo sprintf('%02d', $i) ?>"><?php echo sprintf('%02d', $i); ?></option>
                             <?php endfor; ?>
                         </select>

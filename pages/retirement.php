@@ -1,7 +1,6 @@
 <?php
 
 require_once(dirname(__FILE__) . "/../includes/network/database.php");
-require_once(dirname(__FILE__) . "/../includes/network/function.php");
 require_once(dirname(__FILE__) . "/../includes/function.php");
 
 checkUserLoggedIn();
@@ -19,6 +18,8 @@ if (!empty($_POST['retirement'])) {
             $_POST['retirement_minutes'], $_POST['comment'], $_POST['remark'],
             $_POST['internal_business_type']
         );
+        // TODO:   本番環境ではパスを変更する/
+        header("Location: /attendance_management/index.php");
     }
 }
 
@@ -46,13 +47,13 @@ require_once(dirname(__FILE__) . "/../includes/template-parts/header.php");
                     <div class="reset-select-style form-select form-select-half">
                         <select name="retirement_minutes" required>
                             <option value="" hidden>分</option>
-                            <?php for ($i = 0; $i <= 60; $i = $i + 5): ?>
+                            <?php for ($i = 0; $i < 60; $i = $i + 5): ?>
                                 <option value="<?php echo sprintf('%02d', $i) ?>"><?php echo sprintf('%02d', $i); ?></option>
                             <?php endfor; ?>
                         </select>
                     </div>
                 </div>
-                <div class="content-between">
+                <div class="content-between mobile-content-wrap">
                     <div class="left">
                         <p class="subtitle-font">備考</p>
                         <div class="reset-select-style form-select form-select-half">
