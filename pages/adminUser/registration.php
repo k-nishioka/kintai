@@ -1,11 +1,14 @@
 <?php
 
 require_once(dirname(__FILE__) . "/../../includes/network/database.php");
+require_once(dirname(__FILE__) . "/../../includes/network/function.php");
+
 
 $db = new Database();
 
 if (isset($_POST['registration'])) {
-    $db->createUser($_POST['name'], $_POST['employeeNum'], $_POST['pass'], $_POST['mail'], true);
+    $db->createUser($_POST['name'], $_POST['employeeNum'], $_POST['pass'], $_POST['mail'], 1);
+    userLogin($_POST['mail'], $_POST['pass']);
 }
 
 require_once(dirname(__FILE__) . "/../../includes/template-parts/header.php");
