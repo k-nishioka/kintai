@@ -33,7 +33,7 @@ function userLogin($mail, $pass)
 }
 
 /**
- * ユーザーが種菌済みかを書くんするメソッド
+ * ユーザーが出勤済みかを確認するメソッド
  *
  * @return bool
  */
