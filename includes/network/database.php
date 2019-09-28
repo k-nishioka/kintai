@@ -16,7 +16,7 @@ class Database
      */
     public function __construct()
     {
-        $dns = "mysql:dbname=" . self::DB_NAME . ";host=" . self::HOST . ";charset=utf8mb4";
+        $dns = "mysql:dbname=" . self::DB_NAME . ";host=" . self::HOST . ";charset=utf8";
 
         try {
             $pdo = new PDO($dns, self::USER, self::PASS);
@@ -64,18 +64,26 @@ class Database
         }
     }
 
+    /**
+     * SELECT文を発行するメソッド
+     * ダミーデータ取得用
+     *
+     * @param string $sql
+     * @return void
+     */
+    public function getData(){
+        return $this->dbh;
+        // $mydbh=$this->dbh;
+        // $sql="SELECT * FROM attendances ORDER BY id ASC";
 
+        // try {
+        //     $stmt=$mydbh->prepare($sql);
+        //     $stmt->execute();
 
-
-
-
-
-
-
-
-
-
-
+        // }catch(PDOException $e){
+        //     $e->getMessage();
+        // }
+    }
 }
 
 ?>
