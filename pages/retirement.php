@@ -18,7 +18,6 @@ if (!empty($_POST['retirement'])) {
             $_POST['retirement_minutes'], $_POST['comment'], $_POST['remark'],
             $_POST['internal_business_type']
         );
-        // TODO:   本番環境ではパスを変更する/
         header("Location: /attendance_management/index.php");
     }
 }

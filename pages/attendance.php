@@ -11,7 +11,6 @@ $businessTypes = $db->getBusinessTypes();
 
 if (!empty($_POST['attendance'])) {
     $db->createAttendance($_POST['day'], $_POST['attend_hours'], $_POST['attend_minutes'], $_POST['business_type'], $_SESSION['user_id']);
-    // TODO:   本番環境ではパスを変更する/
     header("Location: /attendance_management/index.php");
 }
 
