@@ -1,14 +1,13 @@
 <?php
 
+require_once(dirname(__FILE__) . "/includes/function.php");
 require_once(dirname(__FILE__) . "/includes/network/database.php");
 require_once(dirname(__FILE__) . "/includes/network/function.php");
-require_once(dirname(__FILE__) . "/includes/function.php");
-
 
 checkUserLoggedIn();
 
 $db = new Database();
-$me = $db->getUserBy(1);
+$me = $db->getUserBy($_SESSION['user_id']);
 $users = $db->getUsers();
 $currentUser = !is_null($_SESSION['current_user']) ? $db->getUserBy($_SESSION['current_user']) : $me;
 $isAttendance = checkAttendance();
@@ -40,15 +39,12 @@ $comments = '';
 
 
 if (!empty($_POST['choice_user'])) {
-    echo '選択ボタン完了';
     if (!empty($_POST['attendance_user'])) {
-        echo 'ユーザーが選択されている';
         $currentUserId = $db->getUserBy($_POST['attendance_user']);
         $_SESSION['current_user'] = $currentUserId['id'];
         header("Location: index.php?date=" . $currentMonth);
     }
 } elseif (!empty($_POST['choice_self'])) {
-    echo '自分ボタン完了';
     $_SESSION['current_user'] = $me['id'];
     header("Location: index.php?date=" . $currentMonth);
 }
@@ -62,7 +58,7 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
     <div class="inner">
         <div class="attendance-main-wrapper">
 
-            <div class="main-header content-between">
+            <div class="main-header content-between mobile-content-wrap">
                 <div class="left">
                     <h4 class="subtitle-font"><?php echo $currentUser['name']; ?>の勤務時間表</h4>
                 </div>
@@ -94,7 +90,7 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                             </select>
                         </div>
                         <div class="for-center">
-                            <input class="form-button subtitle-font" type="submit" value="選択" name="choice_user">
+                            <input class="form-button subtitle-font" type="submit" value="選択したユーザーの勤務表を見る"" name="choice_user">
                         </div>
                     </form>
                 </div>
@@ -121,7 +117,7 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
 
                             $dateTime = strtotime($currentMonth . '-' . $day);
                             $dayOfWeek = date('w', $dateTime);
-                            $attendance = $db->getAttendanceFrom(date('Y-m-d', $dateTime));
+                            $attendance = $db->getAttendanceFrom($currentUser['id'] ,date('Y-m-d', $dateTime));
 
                             if ($dayOfWeek == 0) {
                                 echo '<tr class="sunday-style">';
@@ -132,7 +128,7 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                             }
 
                             if (is_null($attendance)):
-                                echo '<td>' . $day . '日</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
+                                echo '<td>' . $day . '日</td><td>' . $week[$dayOfWeek] . '曜</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
                             else:
                                 $startTime = substr($attendance['start_time'], 11, 5);
                                 $endTime = substr($attendance['end_time'], 11, 5);  
@@ -173,7 +169,7 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                 </table>
             </div>
 
-            <div class="main-footer content-between">
+            <div class="main-footer content-between mobile-content-wrap">
                 <div class="main-footer-table">
                     <table>
                         <tr>
@@ -206,7 +202,7 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                         <?php else: ?>
                             <a href="pages/attendance.php" class="form-button">出社する</a>
                         <?php endif; ?>
-                        <a href="#" class="form-button">PDFダウンロード</a>
+                            <a href="" class="form-button">PDFダウンロード</a>
                     </div>
                 </div>
             </div>

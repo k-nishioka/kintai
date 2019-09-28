@@ -2,10 +2,19 @@
     全体の九通スタイル
 */
 
+* {
+    box-sizing: border-box;
+}
+
+html, body, main, section {
+    width: 100%;
+}
+
 body {
     font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","游ゴシック Medium",YuGothic,YuGothicM,"Hiragino Kaku Gothic ProN",メイリオ,Meiryo,sans-serif;
     color: #000;
     font-size: 16px;
+    width: 100%;
 }
 
 main {
@@ -35,6 +44,7 @@ ul, ol {
 }
 
 .inner {
+    /* max-width: 960px; */
     width: 960px;
     margin: 0 auto;
 }
@@ -363,7 +373,7 @@ ul, ol {
 }
 
 #attendance-post form {
-    width: 60%;
+    /* width: 60%; */
     margin: 40px auto 0;
 }
 
@@ -392,7 +402,7 @@ ul, ol {
 }
 
 #retirement-post form {
-    width: 60%;
+    /* width: 60%; */
     margin: 40px auto 0;
 }
 
@@ -417,6 +427,100 @@ ul, ol {
 
 #retirement-post .left div.form-select-half, #retirement-post .right div.form-select-half {
     width: 100%;
+}
+
+
+
+/*
+    スマホ用のデザイン
+*/
+
+@media screen and (max-width: 480px) {
+
+
+    body {
+        font-size: 12px;
+    }
+
+    main {
+        padding-top: 40px;
+    }
+
+    .title-font {
+        font-size: 24px;
+        font-weight: 500;
+    }
+
+    .subtitle-font {
+        font-size: 18px;
+    }
+
+    .inner {
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    .form-wrapper {
+        width: 100%;
+    }
+
+    .form-wrapper form {
+        padding: 30px 20px;
+    }
+
+    .form-select {
+        width: 100%;
+    }
+
+    .mobile-content-wrap {
+        flex-wrap: wrap;
+    }
+
+    #attendance-post, #retirement-post {
+        padding: 80px 0 40px;
+    }
+
+    #attendance-post form, #retirement-post form {
+        width: 100%;
+    }
+
+    #attendance-post .form-date, #retirement-psot .form-date {
+        border: 1px solid #bbbbbb;
+    }
+
+    #retirement-post .left, #retirement-post .right {
+        width: 100%;
+    }
+
+    .attendance-main-wrapper {
+        padding-bottom: 20px;
+    }
+
+    .main-header .right {
+        margin-top: 30px;
+        font-size: 16px;
+    }
+
+    .main-admin-btns form {
+        flex-wrap: wrap;
+    }
+
+    .main-admin-btns .form-select {
+        margin: 20px 0;
+    }
+
+    .main-footer-btns {
+        margin-top: 40px;
+        width: 100%;
+    }
+
+    .main-footer-btns .form-button {
+        margin-top: 15px;
+    }
+
+
+
+
 }
 
 

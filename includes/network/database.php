@@ -208,16 +208,17 @@ class Database
      * @param string $date
      * @return array | NULL
      */
-    public function getAttendanceFrom($date)
+    public function getAttendanceFrom($userId, $date)
     {
         if (!empty($date)) {
             $mydbh = $this->dbh;
-            $sql = "SELECT * FROM `attendances` WHERE start_time LIKE ?";
+            $sql = "SELECT * FROM `attendances` WHERE user_id = ? AND start_time LIKE ?";
             $date = $date . "%";
 
             try {
                 $prepare = $mydbh->prepare($sql);
-                $prepare->bindValue(1, (string)$date, PDO::PARAM_STR);
+                $prepare->bindValue(1, (int)$userId, PDO::PARAM_INT);
+                $prepare->bindValue(2, (string)$date, PDO::PARAM_STR);
                 $prepare->execute();
                 $result = $prepare->fetch(PDO::FETCH_ASSOC);
             } catch (PDOException $e) {

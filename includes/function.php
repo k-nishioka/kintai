@@ -10,7 +10,8 @@ function checkUserLoggedIn() {
 
     session_start();
     if (empty($_SESSION['user_id'])) {
-        header("Location: login.php");
+        // TODO:   本番環境ではパスを変更する/
+        header("Location: /attendance_management/pages/login.php");
         exit;
     }
 }
