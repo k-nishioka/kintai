@@ -202,7 +202,7 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                         <?php else: ?>
                             <a href="pages/attendance.php" class="form-button">出社する</a>
                         <?php endif; ?>
-                            <a href="" class="form-button">PDFダウンロード</a>
+                            <?php //<a href="" class="form-button">PDFダウンロード</a> ?>
                     </div>
                 </div>
             </div>
