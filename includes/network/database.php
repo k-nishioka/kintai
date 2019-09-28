@@ -306,7 +306,7 @@ class Database
             $day = mb_substr((string)$latestAttendance['start_time'], 0 ,11);
             $date = $day . $hour . ":" . $minute . ":00";
             $diffTIme = getDiffTime($latestAttendance['start_time'], $date);
-            $sql = "UPDATE `attendances` SET end_time = ?, breaktime_minute = ?, comment = ?, remarks_id = ?, internal_business_id = ? WHERE id = ?";
+            $sql = "UPDATE `attendances` SET end_time = ?, breaktime_minute = ?, comment = ?, remark_id = ?, internal_business_id = ? WHERE id = ?";
 
             try {
                 $prepare = $mydbh->prepare($sql);
