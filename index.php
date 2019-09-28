@@ -198,9 +198,9 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                 <div class="main-footer-btns">
                     <div class="for-center ">
                         <?php if ($isAttendance): ?>
-                            <a href="pages/retirement.php" class="form-button">退社する</a>
+                            <a href="/attendance_management/pages/retirement.php" class="form-button">退社する</a>
                         <?php else: ?>
-                            <a href="pages/attendance.php" class="form-button">出社する</a>
+                            <a href="/attendance_management/pages/attendance.php" class="form-button">出社する</a>
                         <?php endif; ?>
                             <?php //<a href="" class="form-button">PDFダウンロード</a> ?>
                     </div>
