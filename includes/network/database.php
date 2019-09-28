@@ -356,8 +356,6 @@ class Database
             $mydbh = $this->dbh;
             $sql = "SELECT * FROM `business_types` WHERE id = ?";
 
-<<<<<<< HEAD
-=======
             try {
                 $prepare = $mydbh->prepare($sql);
                 $prepare->bindValue(1, (int)$id, PDO::PARAM_INT);
@@ -454,7 +452,6 @@ class Database
             return $result ? $result : NULL;
         }
     }
->>>>>>> e035a688f5844176f0a8238d77581742bf375895
 }
 
 ?>
