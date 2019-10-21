@@ -6,9 +6,9 @@ USE attendance_management;
 CREATE TABLE `users` (
     `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(30) NOT NULL,
-    `employy_num` INT(11) UNSIGNED NOT NULL,
+    `employee_num` INT(11) UNSIGNED NOT NULL,
     `mail` VARCHAR(50) NOT NULL,
-    `pass` VARCHAR(30) NOT NULL,
+    `pass` VARCHAR(100) NOT NULL,
     `is_admin` BIT NOT NULL DEFAULT 0,
     `created_time` TIMESTAMP,
     PRIMARY KEY(`id`)
@@ -29,7 +29,7 @@ CREATE TABLE `attendances` (
     `breaktime_minute` INT(11) UNSIGNED,
     `comment` VARCHAR(255),
     `business_type_id` INT(11) UNSIGNED,
-    `remarks_id` INT(11) UNSIGNED,
+    `remark_id` INT(11) UNSIGNED,
     `internal_business_id` INT(11) UNSIGNED,
     `user_id` INT(11) UNSIGNED,
     `created_time` TIMESTAMP,
@@ -64,4 +64,4 @@ INSERT INTO `internal_business_types` (name) VALUES
     ('内勤業務補佐'), ('カリキュラム進行'), ('MTG・開発等'), ('帰社日'), ('その他');
 
 INSERT INTO `remarks` (name) VALUES
-    ('有給'), ('遅刻'), ('早退'), ('欠勤'), ('特別休暇'), ('忌引');
+    ('有給'), ('遅刻'), ('早退'), ('欠勤'), ('特別休暇'), ('忌引'),('スポット稼働');

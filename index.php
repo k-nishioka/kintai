@@ -37,7 +37,7 @@ $totalOverTimes = 0;
 $totalMidnightTimes = 0;
 $comments = '';
 
-
+// adminユーザの場合のみ分岐IN
 if (!empty($_POST['choice_user'])) {
     if (!empty($_POST['attendance_user'])) {
         $currentUserId = $db->getUserBy($_POST['attendance_user']);
@@ -90,7 +90,7 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                             </select>
                         </div>
                         <div class="for-center">
-                            <input class="form-button subtitle-font" type="submit" value="選択したユーザーの勤務表を見る"" name="choice_user">
+                            <input class="form-button subtitle-font" type="submit" value="選択したユーザーの勤務表を見る" name="choice_user">
                         </div>
                     </form>
                 </div>
@@ -202,7 +202,7 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                         <?php else: ?>
                             <a href="/attendance_management/pages/attendance.php" class="form-button">出社する</a>
                         <?php endif; ?>
-                            <a href="" class="form-button">PDFダウンロード</a>
+                            <a href="/attendance_management/includes/output/pages/pdf_download.php?cmd=<?php echo $currentMonthDays; ?>&cm=<?php echo $currentMonth; ?>" class="form-button">PDFダウンロード</a>
                     </div>
                 </div>
             </div>
@@ -210,5 +210,3 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
         </div>
     </div>
 </section>
-
-<?php require_once(dirname(__FILE__) . "/includes/template-parts/footer.php"); ?>

@@ -14,10 +14,10 @@
     require_once(dirname(__FILE__) . "/../../lib/TCPDF/FPDI/autoload.php");
     require_once(dirname(__FILE__) . "/../for_dummy_data/func/get_html_data.php");
     require_once(dirname(__FILE__) . "/../for_dummy_data/pages/pdf_template.php");
-    // Position NUM
-    define(RIGHT, 10);
-    define(TOP, 15);
-    define(LEFT, 10);
+    // Margin Position
+    const RIGHT = 10;
+    const TOP = 15;
+    const LEFT = 10;
 
     use setasign\Fpdi\TcpdfFpdi;
     $pdf = new TcpdfFpdi();
