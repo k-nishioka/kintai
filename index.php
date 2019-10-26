@@ -128,7 +128,7 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                             }
 
                             if (is_null($attendance)):
-                                echo '<td>' . $day . '日</td><td>' . $week[$dayOfWeek] . '曜</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
+                                echo '<td>' . $day . '日</td><td>' . $week[$dayOfWeek] . '</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
                             else:
                                 $startTime = substr($attendance['start_time'], 11, 5);
                                 $endTime = substr($attendance['end_time'], 11, 5);  
@@ -137,7 +137,7 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                                 $remark = $db->getRemarkBy($attendance['remarks_id']);
                     ?>
                             <td><?php echo $day; ?>日</td>
-                            <td><?php echo $week[$dayOfWeek]; ?>曜</td>
+                            <td><?php echo $week[$dayOfWeek]; ?></td>
                             <td><?php echo $startTime ?></td>
                             <td><?php echo $endTime; ?></td>
                             <td><?php echo $attendance['breaktime_minute']; ?>分</td>

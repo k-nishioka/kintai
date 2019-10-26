@@ -46,8 +46,7 @@ require_once(dirname(__FILE__) . "/../includes/template-parts/header.php");
                     <div class="reset-select-style form-select form-select-half">
                         <select name="retirement_minutes" required>
                             <option value="" hidden>分</option>
-<!--                             for ($i = 0; $i < 60; $i = $i + 5):
- -->                            <?php for ($i = 0; $i < 60; $i = $i + 15): ?>
+                            <?php for ($i = 0; $i < 60; $i = $i + 15): ?>
                                 <option value="<?php echo sprintf('%02d', $i) ?>"><?php echo sprintf('%02d', $i); ?></option>
                             <?php endfor; ?>
                         </select>
