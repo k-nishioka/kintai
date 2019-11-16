@@ -73,33 +73,33 @@ require_once(dirname(__FILE__) . "/../../function.php");
             // 勤務情報がない場合、日にちと曜日だけを出力
             // 勤務情報がある場合、日にちと曜日＋勤務情報を出力
                 if (is_null($attendance)):
-                    $html_data = $html_data.'<td>'.$day.'日</td><td>'.$week[$dayOfWeek].'曜</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
+                    $html_data = $html_data.'<td>'.$day.'日</td><td>'.$week[$dayOfWeek].'</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
                 else:
                     $startTime = substr($attendance['start_time'], 11, 5);
                     $endTime = substr($attendance['end_time'], 11, 5);  
-                    $diffTime = getDiffTime($attendance['start_time'], $attendance['end_time'], $attendance['breaktime_minute']);
+                    $diffTime = getDiffTime($attendance['start_time'], $attendance['end_time']);
+                    is_null($attendance['breaktime']) ? $breakTimes = "00:00" : $breakTimes = $attendance['breaktime'];
+                    is_null($diffTime['workTime']) ? $workTime = "00:00" : $workTime = $diffTime['specialStrTimes'][0];
+                    is_null($diffTime['overTime']) ? $overTime = "00:00" : $overTime = $diffTime['specialStrTimes'][1];
+                    is_null($diffTime['midnight']) ? $midnight = "00:00" : $midnight = $diffTime['specialStrTimes'][2];
                     $internalType = $db->getInternalBusinessTypeBy($attendance['internal_business_id']);
-                    $remark = $db->getRemarkBy($attendance['remarks_id']);
-
-                    $workTime = $diffTime['workTime'];
-                    $overTime = $diffTime['overTime'];
-                    $midnight = $diffTime['midnight'];
+                    $remark = $db->getRemarkBy($attendance['remark_id']);
 
                     $html_data = $html_data. '
                     <td>'.$day.'日</td>
-                    <td>'.$week[$dayOfWeek].'曜</td>
+                    <td>'.$week[$dayOfWeek].'</td>
                     <td>'.$startTime.'</td>
                     <td>'.$endTime.'</td>
-                    <td>'.$attendance['breaktime_minute'].'分</td>
-                    <td>'.$workTime.'時間</td>
-                    <td>'.$overTime.'時間</td>
-                    <td>'.$midnight.'時間</td>';
+                    <td>'.$breakTimes.'</td>
+                    <td>'.$workTime.'</td>
+                    <td>'.$overTime.'</td>
+                    <td>'.$midnight.'</td>';
 
                     // 勤務種別の分岐
                     if ($attendance['business_type_id'] == 1) {
-                        $html_data = $html_data. '<td></td><td>'.$diffTime['workTime'].'時間</td>';
+                        $html_data = $html_data. '<td></td><td>'.$diffTime['specialStrTimes'][0].'</td>';
                     } elseif ($attendance['business_type_id'] == 2) {
-                        $html_data = $html_data. '<td>'.$diffTime['workTime'].'時間</td><td></td>';
+                        $html_data = $html_data. '<td>'.$diffTime['specialStrTimes'][0].'</td><td></td>';
                     } else {
                         $html_data = $html_data. '<td></td><td></td>';
                     }
@@ -111,9 +111,9 @@ require_once(dirname(__FILE__) . "/../../function.php");
                         $totalPaidDays++;
                     }
                     $totalWorkDays++;
-                    $totalWorkTimes += $workTime;
-                    $totalOverTimes += $overTime;
-                    $totalMidnightTimes += $midnight;
+                    $totalWorkTimes += $diffTime['workTime'];
+                    $totalOverTimes += $diffTime['overTime'];
+                    $totalMidnightTimes += $diffTime['midnight'];
 
                     // 備考があれば、備考を出力
                     if (!is_null($attendance['comment'])) $comments = $attendance['comment'];
@@ -122,7 +122,20 @@ require_once(dirname(__FILE__) . "/../../function.php");
         $html_data = $html_data.'</table></div>';
  
         if ($comments == '') $comments = '備考はありません';
-        // $html = $html.'<br>'.
+
+        $sumTimeArr = array(
+            'totalWorkTimes' => $totalWorkTimes,
+            'totalOverTimes' => $totalOverTimes,
+            'totalMidnightTimes' => $totalMidnightTimes
+        );
+        $sumTimeStr = array();
+        $index = 0;
+        foreach($sumTimeArr as $value) : 
+            $partHour = floor($value);
+            $partMinute = ($value - $partHour) * 60;
+            $sumTimesStr[$index++] = sprintf("%02d",$partHour) . ":" . sprintf("%02d",$partMinute);
+        endforeach;
+
         $html_etc = $html_etc.'<br>'.
         '<div class="main-footer content-between mobile-content-wrap">
             <div class="main-footer-table">
@@ -135,11 +148,11 @@ require_once(dirname(__FILE__) . "/../../function.php");
                         <th>深夜時間合計</th>
                     </tr>
                     <tr>
-                        <td>'.$totalPaidDays.'日</td>
-                        <td>'.$totalWorkDays.'日</td>
-                        <td>'.$totalWorkTimes.'時間</td>
-                        <td>'.$totalOverTimes.'時間</td>
-                        <td>'.$totalMidnightTimes.'時間</td>
+                        <td>'.$totalPaidDays.'</td>
+                        <td>'.$totalWorkDays.'</td>
+                        <td>'.$sumTimesStr[0].'</td>
+                        <td>'.$sumTimesStr[1].'</td>
+                        <td>'.$sumTimesStr[2].'</td>
                     </tr>
                 </table>
                 <table class="comment-table">

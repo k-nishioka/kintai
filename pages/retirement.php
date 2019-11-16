@@ -30,7 +30,7 @@ require_once(dirname(__FILE__) . "/../includes/template-parts/header.php");
 <section id="retirement-post">
     <div class="inner">
         <div class="form-wrapper">
-            <h2 class="title-font">ユーザーの登録画面</h2>
+            <h2 class="title-font">ユーザーの退社画面</h2>
             <form method="POST">
                 <p class="subtitle-font">時間</p>
                 <div class="content-between">
@@ -64,6 +64,7 @@ require_once(dirname(__FILE__) . "/../includes/template-parts/header.php");
                             </select>
                         </div>
                     </div>
+                    <?php if($_GET['type']==1): ?>
                     <div class="right">
                         <p class="subtitle-font">社内業務内容</p>
                         <div class="reset-select-style form-select form-select-half">
@@ -75,6 +76,7 @@ require_once(dirname(__FILE__) . "/../includes/template-parts/header.php");
                             </select>
                         </div>
                     </div>
+                    <?php endif; ?>
                 </div>
                 <p class="subtitle-font">備考詳細</p>
                 <textarea class="form-textarea" name="comment" type="textarea"></textarea>

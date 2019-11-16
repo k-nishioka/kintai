@@ -22,7 +22,7 @@ require_once(dirname(__FILE__) . "/../includes/template-parts/header.php");
 <section id="attendance-post">
     <div class="inner">
         <div class="form-wrapper">
-            <h2 class="title-font">ユーザーの登録画面</h2>
+            <h2 class="title-font">ユーザーの出社画面</h2>
             <form method="POST">
                 <p class="subtitle-font">日付</p>
                 <input class="form-date" type="date" name="day" required>

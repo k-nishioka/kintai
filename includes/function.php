@@ -47,15 +47,26 @@ function getDiffTime($startTime, $endTime)
     $diffHours = $intervalHours % 60;
 
     $totalWorkTime = $intervalMinutes / 60;
-    $breakMinutes = $totalWorkTime > 8 ? 60 : NULL;
-    $workTime = !is_null($breakMinutes) ? ($intervalMinutes - $breakMinutes) / 60 : $totalWorkTime;
+    $breakHours = $totalWorkTime > 8 ? 1 : 0;
+    $inMinFraction = $intervalMinutes / 60;
+    $workTime = !is_null($breakHours) ? $inMinFraction - $breakHours : $totalWorkTime;
     $overTime = $workTime > 8 ? $workTime - 8 : 0;
 
     $workDay = date('Y-m-d', mktime(0, 0, 0, date('m', $start), date('d', $start), date('Y', $start)));
     $midnight = strtotime($workDay . " 22:00:00");
     $intervalMidSeconds = $end > $midnight ? $end - $midnight : 0;
     $intervalMidMinutes = floor($intervalMidSeconds / 60);
-    $midnightWork = $intervalMidMinutes / 60;
+    $midnightHours = $intervalMidMinutes / 60;
+
+    $breakHours = sprintf("%02d",$breakHours) . ":00";
+    $timeArr = array($workTime,$overTime,$midnightHours);
+    $specialStrTimes = array();
+
+    foreach($timeArr as $i => $value) :
+        $partHour = floor($value);
+        $partMinute = ($value - $partHour) * 60;
+        $specialStrTimes[$i] = sprintf("%02d",$partHour) . ":" . sprintf("%02d",$partMinute);
+    endforeach;
 
     $diffTime = array(
         'intervalSeconds' => $intervalSeconds,
@@ -70,8 +81,9 @@ function getDiffTime($startTime, $endTime)
         'm:s' => sprintf('%02d', $diffMinuts) . ':' . sprintf('%02d', $diffSeconds),
         'workTime' => $workTime,
         'overTime' => $overTime,
-        'midnight' => $midnightWork,
-        'breakMinutes' => $breakMinutes,
+        'midnight' => $midnightHours,
+        'specialStrTimes' => $specialStrTimes,
+        'breakHours' => $breakHours,
     );
 
     return $diffTime;

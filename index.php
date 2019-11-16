@@ -9,6 +9,8 @@ checkUserLoggedIn();
 $db = new Database();
 $me = $db->getUserBy($_SESSION['user_id']);
 $users = $db->getUsers();
+// ログイン時警告対応
+if( empty($_GET['date']) ) $_SESSION['current_user'] = NULL;
 $currentUser = !is_null($_SESSION['current_user']) ? $db->getUserBy($_SESSION['current_user']) : $me;
 $isAttendance = checkAttendance();
 
@@ -131,24 +133,31 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                                 echo '<td>' . $day . '日</td><td>' . $week[$dayOfWeek] . '</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
                             else:
                                 $startTime = substr($attendance['start_time'], 11, 5);
-                                $endTime = substr($attendance['end_time'], 11, 5);  
-                                $diffTime = getDiffTime($attendance['start_time'], $attendance['end_time'], $attendance['breaktime_minute']);
+                                $endTime = substr($attendance['end_time'], 11, 5);
+                                is_null($attendance['breaktime']) ? $breakTimes = "00:00" : $breakTimes = $attendance['breaktime'];
+                                $diffTime = getDiffTime($attendance['start_time'], $attendance['end_time']);
+                                // is_null($diffTime['workTime']) ? $workTime = "00:00" : $workTime = $diffTime['specialStrTimes'][0];
+                                is_null($diffTime['workTime']) ? $workTime = NULL : $workTime = $diffTime['specialStrTimes'][0];
+                                is_null($diffTime['overTime']) ? $overTime = NULL : $overTime = $diffTime['specialStrTimes'][1];
+                                is_null($diffTime['midnight']) ? $midnight = NULL : $midnight = $diffTime['specialStrTimes'][2];
                                 $internalType = $db->getInternalBusinessTypeBy($attendance['internal_business_id']);
-                                $remark = $db->getRemarkBy($attendance['remarks_id']);
+                                $remark = $db->getRemarkBy($attendance['remark_id']);
                     ?>
                             <td><?php echo $day; ?>日</td>
                             <td><?php echo $week[$dayOfWeek]; ?></td>
                             <td><?php echo $startTime ?></td>
                             <td><?php echo $endTime; ?></td>
-                            <td><?php echo $attendance['breaktime_minute']; ?>分</td>
-                            <td><?php echo $diffTime['workTime']; ?>時間</td>
-                            <td><?php echo $diffTime['overTime']; ?>時間</td>
-                            <td><?php echo $diffTime['midnight']; ?>時間</td>
+                            <td><?php echo $breakTimes; ?></td>
+                            <td><?php echo $workTime; ?></td>
+                            <td><?php echo $overTime; ?></td>
+                            <td><?php echo $midnight; ?></td>
                             <?php
                                 if ($attendance['business_type_id'] == 1) {
-                                    echo '<td></td><td>' . $diffTime['workTime'] . '時間</td>';
+                                    echo '<td></td><td>' . $diffTime['specialStrTimes'][0] . '</td>';
+                                    $business_type_id = 1;
                                 } elseif ($attendance['business_type_id'] == 2) {
-                                    echo '<td>' . $diffTime['workTime'] .'時間</td><td></td>';
+                                    echo '<td>' . $diffTime['specialStrTimes'][0] .'</td><td></td>';
+                                    $business_type_id = 2;
                                 } else {
                                     echo '<td></td><td></td>';
                                 }
@@ -169,6 +178,7 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                 </table>
             </div>
 
+            <?php $sumTimeArr = array($totalWorkTimes,$totalOverTimes,$totalMidnightTimes); $sumTimeStr = array(); ?>
             <div class="main-footer content-between mobile-content-wrap">
                 <div class="main-footer-table">
                     <table>
@@ -182,9 +192,13 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                         <tr>
                             <td><?php echo $totalPaidDays; ?>日</td>
                             <td><?php echo $totalWorkDays; ?>日</td>
-                            <td><?php echo $totalWorkTimes; ?>時間</td>
-                            <td><?php echo $totalOverTimes; ?>時間</td>
-                            <td><?php echo $totalMidnightTimes; ?>時間</td>
+                            <?php foreach($sumTimeArr as $i => $value) : 
+                                $partHour = floor($value);
+                                $partMinute = ($value - $partHour) * 60;
+                                $sumTimesStr[$i] = sprintf("%02d",$partHour) . ":" . sprintf("%02d",$partMinute);
+                            ?>
+                            <td><?php echo $sumTimesStr[$i]; ?></td>
+                            <?php endforeach; ?>
                         </tr>
                     </table>
                     <table class="comment-table">
@@ -198,7 +212,7 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                 <div class="main-footer-btns">
                     <div class="for-center ">
                         <?php if ($isAttendance): ?>
-                            <a href="/attendance_management/pages/retirement.php" class="form-button">退社する</a>
+                            <a href="/attendance_management/pages/retirement.php?type=<?php echo $business_type_id; ?>" class="form-button">退社する</a>
                         <?php else: ?>
                             <a href="/attendance_management/pages/attendance.php" class="form-button">出社する</a>
                         <?php endif; ?>

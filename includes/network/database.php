@@ -312,13 +312,12 @@ class Database
             $day = mb_substr((string)$latestAttendance['start_time'], 0 ,11);
             $date = $day . $hour . ":" . $minute . ":00";
             $diffTIme = getDiffTime($latestAttendance['start_time'], $date);
-            // $sql = "UPDATE `attendances` SET end_time = ?, breaktime_minute = ?, comment = ?, remark_id = ?, internal_business_id = ? WHERE id = ?";
-            $sql = "UPDATE `attendances` SET end_time = ?, breaktime_minute = ?, comment = ?, remarks_id = ?, internal_business_id = ? WHERE id = ?";
+            $sql = "UPDATE `attendances` SET end_time = ?, breaktime = ?, comment = ?, remark_id = ?, internal_business_id = ? WHERE id = ?";
 
             try {
                 $prepare = $mydbh->prepare($sql);
                 $prepare->bindValue(1, (string)$date, PDO::PARAM_STR);
-                is_null($diffTIme['breakMinutes']) ? $prepare->bindValue(2, NULL, PDO::PARAM_NULL) : $prepare->bindValue(2, (int)$diffTIme['breakMinutes'], PDO::PARAM_INT);
+                is_null($diffTIme['breakHours']) ? $prepare->bindValue(2, NULL, PDO::PARAM_NULL) : $prepare->bindValue(2, (string)$diffTIme['breakHours'], PDO::PARAM_STR); 
                 empty($comment) ? $prepare->bindValue(3, NULL, PDO::PARAM_NULL) : $prepare->bindValue(3, (string)$comment, PDO::PARAM_STR);
                 empty($remarkId) ? $prepare->bindValue(4, NULL, PDO::PARAM_NULL) : $prepare->bindValue(4, (int)$remarkId, PDO::PARAM_INT);
                 empty($internalBusinessId) ? $prepare->bindValue(5, NULL, PDO::PARAM_NULL) : $prepare->bindValue(5, (int)$internalBusinessId, PDO::PARAM_INT);
