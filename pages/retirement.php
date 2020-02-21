@@ -15,7 +15,7 @@ if (!empty($_POST['retirement'])) {
     if (!is_null($latestAttendanceId)) {
         $db->createRetirement(
             $latestAttendanceId, $_POST['retirement_hours'],
-            $_POST['retirement_minutes'], $_POST['comment'], $_POST['remark'],
+            $_POST['retirement_minutes'], $_POST['retirement_breaktime'], $_POST['comment'], $_POST['remark'],
             $_POST['internal_business_type']
         );
         header("Location: /attendance_management/index.php");
@@ -54,6 +54,19 @@ require_once(dirname(__FILE__) . "/../includes/template-parts/header.php");
                 </div>
                 <div class="content-between mobile-content-wrap">
                     <div class="left">
+                        <p class="subtitle-font">休憩時間</p>
+                        <div class="reset-select-style form-select form-select-half">
+                            <select name="retirement_breaktime" required>
+                                <option value="" hidden>分</option>
+                                <?php for ($i = 0; $i <= 60; $i = $i + 15): ?>
+                                    <option value="<?php echo sprintf('%02d', $i) ?>"><?php echo sprintf('%02d', $i); ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-between mobile-content-wrap">
+                    <div class="left">
                         <p class="subtitle-font">備考</p>
                         <div class="reset-select-style form-select form-select-half">
                             <select name="remark">
@@ -64,7 +77,6 @@ require_once(dirname(__FILE__) . "/../includes/template-parts/header.php");
                             </select>
                         </div>
                     </div>
-                    <?php if($_GET['type']==1): ?>
                     <div class="right">
                         <p class="subtitle-font">社内業務内容</p>
                         <div class="reset-select-style form-select form-select-half">
@@ -76,7 +88,6 @@ require_once(dirname(__FILE__) . "/../includes/template-parts/header.php");
                             </select>
                         </div>
                     </div>
-                    <?php endif; ?>
                 </div>
                 <p class="subtitle-font">備考詳細</p>
                 <textarea class="form-textarea" name="comment" type="textarea"></textarea>

@@ -142,7 +142,7 @@ ul, ol {
 }
 
 .form-wrapper form {
-    padding: 50px;
+    padding: 100px 50px;
     margin-top: 40px;
     border: 1px solid #d0d0d0;
     border-radius: 15px;
@@ -345,6 +345,12 @@ ul, ol {
 
 .comment-table th, .comment-table td {
     padding: 20px 12px;
+}
+
+.comment-table td {
+    height: 150px;
+    width: 400px;
+    text-align: left;
 }
 
 .comment-table th {

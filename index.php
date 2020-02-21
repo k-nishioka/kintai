@@ -37,7 +37,7 @@ $totalWorkDays = 0;
 $totalWorkTimes = 0;
 $totalOverTimes = 0;
 $totalMidnightTimes = 0;
-$comments = '';
+$comments = [];
 
 // adminユーザの場合のみ分岐IN
 if (!empty($_POST['choice_user'])) {
@@ -134,12 +134,21 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                             else:
                                 $startTime = substr($attendance['start_time'], 11, 5);
                                 $endTime = substr($attendance['end_time'], 11, 5);
-                                is_null($attendance['breaktime']) ? $breakTimes = "00:00" : $breakTimes = $attendance['breaktime'];
-                                $diffTime = getDiffTime($attendance['start_time'], $attendance['end_time']);
-                                // is_null($diffTime['workTime']) ? $workTime = "00:00" : $workTime = $diffTime['specialStrTimes'][0];
-                                is_null($diffTime['workTime']) ? $workTime = NULL : $workTime = $diffTime['specialStrTimes'][0];
-                                is_null($diffTime['overTime']) ? $overTime = NULL : $overTime = $diffTime['specialStrTimes'][1];
-                                is_null($diffTime['midnight']) ? $midnight = NULL : $midnight = $diffTime['specialStrTimes'][2];
+                                if(!is_null($attendance['breaktime'])) {
+                                    $breakTimeMinutes = $attendance['breaktime'];
+                                    if($breakTimeMinutes == 60){
+                                        $breakTimeHours = $breakTimeMinutes / 60;
+                                        $breakTime = sprintf("%02d", $breakTimeHours) . ':00';
+                                    }else{
+                                        $breakTime = '00:' . sprintf("%02d", $breakTimeMinutes);
+                                    }
+                                }else{
+                                    $breakTime = '00:00';
+                                }
+                                $diffTime = getDiffTime($attendance['start_time'], $attendance['end_time'], $attendance['breaktime']);
+                                is_null($diffTime['workTime']) ? $workTime = NULL : $workTime = $diffTime['specialTimes'][0];
+                                is_null($diffTime['overTime']) ? $overTime = NULL : $overTime = $diffTime['specialTimes'][1];
+                                is_null($diffTime['midnight']) ? $midnight = NULL : $midnight = $diffTime['specialTimes'][2];
                                 $internalType = $db->getInternalBusinessTypeBy($attendance['internal_business_id']);
                                 $remark = $db->getRemarkBy($attendance['remark_id']);
                     ?>
@@ -147,17 +156,15 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                             <td><?php echo $week[$dayOfWeek]; ?></td>
                             <td><?php echo $startTime ?></td>
                             <td><?php echo $endTime; ?></td>
-                            <td><?php echo $breakTimes; ?></td>
+                            <td><?php echo $breakTime; ?></td>
                             <td><?php echo $workTime; ?></td>
                             <td><?php echo $overTime; ?></td>
                             <td><?php echo $midnight; ?></td>
                             <?php
                                 if ($attendance['business_type_id'] == 1) {
-                                    echo '<td></td><td>' . $diffTime['specialStrTimes'][0] . '</td>';
-                                    $business_type_id = 1;
+                                    echo '<td></td><td>' . $diffTime['specialTimes'][0] . '</td>';
                                 } elseif ($attendance['business_type_id'] == 2) {
-                                    echo '<td>' . $diffTime['specialStrTimes'][0] .'</td><td></td>';
-                                    $business_type_id = 2;
+                                    echo '<td>' . $diffTime['specialTimes'][0] .'</td><td></td>';
                                 } else {
                                     echo '<td></td><td></td>';
                                 }
@@ -171,7 +178,7 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                                 $totalWorkTimes += $diffTime['workTime'];
                                 $totalOverTimes += $diffTime['overTime'];
                                 $totalMidnightTimes += $diffTime['midnight'];
-                                if (!is_null($attendance['comment'])) $comments = $attendance['comment'] . '<br>';
+                                if (!is_null($attendance['comment'])) $comments[] = $attendance['comment'] . '<br>';
                             endif;
                         endfor; 
                     ?>
@@ -204,15 +211,19 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                     <table class="comment-table">
                         <tr>
                             <th>備考</th>
-                            <?php if ($comments == '') $comments = '備考はありません'; ?>
-                            <td><?php echo $comments; ?></td>
+                            <td>
+                            <?php 
+                                if (empty($comments)) $comments[0] = '備考はありません';
+                                foreach($comments as $values) echo $values; 
+                            ?>
+                            </td>
                         </tr>
                     </table>
                 </div>
                 <div class="main-footer-btns">
                     <div class="for-center ">
                         <?php if ($isAttendance): ?>
-                            <a href="/attendance_management/pages/retirement.php?type=<?php echo $business_type_id; ?>" class="form-button">退社する</a>
+                            <a href="/attendance_management/pages/retirement.php" class="form-button">退社する</a>
                         <?php else: ?>
                             <a href="/attendance_management/pages/attendance.php" class="form-button">出社する</a>
                         <?php endif; ?>
@@ -220,7 +231,6 @@ require_once(dirname(__FILE__) . "/includes/template-parts/header.php");
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </section>

@@ -26,7 +26,7 @@ CREATE TABLE `attendances` (
     `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     `start_time` DATETIME NOT NULL,
     `end_time` DATETIME,
-    `breaktime` VARCHAR(30),
+    `breaktime` INT(4) UNSIGNED,
     `comment` VARCHAR(255),
     `business_type_id` INT(11) UNSIGNED,
     `remark_id` INT(11) UNSIGNED,
