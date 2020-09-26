@@ -11,12 +11,15 @@ Thumbs.db
 Desktop.ini
 
 # ignore Composer downloads
-/vendor/*
+/lib/vendor/*
 
 # keep some hiddens
 !.htaccess
 !/.gitignore
 !/.travis.yml
 
-# Leo orinal
+# Leo original
 .DS_Store
+
+# Nishioka memo
+/readme.txt
